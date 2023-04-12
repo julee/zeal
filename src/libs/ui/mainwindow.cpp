@@ -363,7 +363,31 @@ void MainWindow::setupTabBar()
     m_tabBar->setUsesScrollButtons(true);
     m_tabBar->setDocumentMode(true);
     m_tabBar->setElideMode(Qt::ElideRight);
+    #ifdef __APPLE__
+    const QString style = R"(
+        QTabBar {
+            background-color: transparent; qproperty-drawBase:0;
+        } 
+        QTabBar::tab {
+            background-color: #f7f7f7;
+            border: none;
+            padding: 4px;
+            margin-right: 1px;
+            width: 150px;
+        }
+        QTabBar::tab:selected {
+            color: #000;
+            background-color: #fff;
+            border-top: 2px solid #007aff;
+        }
+        QTabBar::tab:hover:!selected {
+            background-color: #999;
+        }
+    )";
+    m_tabBar->setStyleSheet(style);
+    #else
     m_tabBar->setStyleSheet(QStringLiteral("QTabBar::tab { width: 150px; }"));
+    #endif
     m_tabBar->setMovable(true);
 
     connect(m_tabBar, &QTabBar::currentChanged, this, [this](int index) {
