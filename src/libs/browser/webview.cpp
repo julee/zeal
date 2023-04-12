@@ -78,7 +78,11 @@ void WebView::setZoomLevel(int level)
     m_zoomLevel = level;
 
     // Scale the webview relative to the DPI of the screen.
+    #ifdef __APPLE__
+    const double dpiZoomFactor = 1.0;
+    #else
     const double dpiZoomFactor = logicalDpiY() / 96.0;
+    #endif
 
     setZoomFactor(availableZoomLevels().at(level) / 100.0 * dpiZoomFactor);
     emit zoomLevelChanged();
